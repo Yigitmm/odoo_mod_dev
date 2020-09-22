@@ -1,1 +1,1 @@
-# odoo_mod_dev
+# odoo_mod_devtest
