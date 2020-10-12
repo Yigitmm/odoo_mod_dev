@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
         <record model="ir.ui.view" id="course_form_view">
             <field name="name">course.form</field>
             <field name="model">openacademy.course</field>
@@ -9,13 +8,19 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="responsible_id"/>
                         </group>
                         <notebook>
                             <page string="Description">
                                 <field name="description"/>
                             </page>
-                            <page string="About">
-                                This is an example of notebooks
+                            <page string="Sessions">
+                                <field name="session_ids">
+                                    <tree string="Registered sessions">
+                                        <field name="name"/>
+                                        <field name="instructor_id"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -31,6 +36,7 @@
             <field name="arch" type="xml">
                 <tree string="Course Tree">
                     <field name="name"/>
+                    <field name="responsible_id"/>
                 </tree>
             </field>
         </record>
@@ -66,10 +72,13 @@
                                 <field name="seats"/>
                             </group>
                         </group>
+                        <label for="attendee_ids"/>
+                        <field name="attendee_ids"/>
                     </sheet>
                 </form>
             </field>
         </record>
+
   
         <!-- session tree/list view -->
         <record model="ir.ui.view" id="session_tree_view">
@@ -82,7 +91,7 @@
                 </tree>
             </field>
         </record>
-    
+     
     
         <!-- Full id location:
              action="openacademy.course_list_action"
@@ -99,31 +108,18 @@
             <field name="name">Courses</field>
             <field name="res_model">openacademy.course</field>
             <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first course
+                </p>
+            </field>
         </record>
-    
 
-        <menuitem id="model_openacademy_session" name="openacademy.session"/>        
-
-        <menuitem id="session_menu" name="Sessions"
-                  parent="model_openacademy_session"
-                  action="session_list_action"/> 
-    
-        <menuitem id="model_openacademy_course" name="openacademy.course"/>    
-    
-        <menuitem id="courses_menu" name="Courses"
-                  parent="model_openacademy_course"
-                  action="course_list_action"/>    
-    
-            <!-- top level menu: no parent -->
         <menuitem id="main_openacademy_menu" name="Open Academy"/>
-        <!-- A first level in the left side menu is needed
-             before using action= attribute -->
-        <menuitem id="openacademy_menu" name="Open Academy" parent="main_openacademy_menu"/>
-        <!-- the following menuitem should appear *after*
-             its parent openacademy_menu and *after* its
-             action course_list_action -->
-        <menuitem id="courses_menu" name="Courses" parent="openacademy_menu" action="course_list_action"/>
     
+        <menuitem id="openacademy_session_menu" name="Academy Sessions" parent="main_openacademy_menu"
+                  action="session_list_action"/>
     
-    
+        <menuitem id="openacademy_courses_menu" name="Academy Courses" parent="main_openacademy_menu"
+                  action="course_list_action"/>
+        
 </odoo>
