@@ -11,6 +11,7 @@
                     <page string="Sessions">
                         <group>
                             <field name="instructor"/>
+                            <field name="category_id"/>
                             <field name="session_ids"/>
                         </group>
                     </page>
@@ -22,7 +23,7 @@
             <field name="name">partner.category</field>
             <field name="model">res.partner.category</field>
             <field name="arch" type="xml">
-                <tree editable="top">
+                <tree editable="bottom">
                     <field name="name"/>
                 </tree>
             </field>
@@ -56,6 +57,5 @@
         <record model="res.partner.category" id="teacher2">
             <field name="name">Teacher / Level 2</field>
         </record>
-
 
 </odoo>
