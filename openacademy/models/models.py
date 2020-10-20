@@ -38,8 +38,8 @@ class Course(models.Model):
          'UNIQUE(name)',
          "The course title must be unique"),
     ]
-
     
+
 class Session(models.Model):
     _name = 'openacademy.session'
     _description = "OpenAcademy Sessions"
@@ -50,6 +50,7 @@ class Session(models.Model):
     seats = fields.Integer(string="Number of seats")
     active = fields.Boolean(default=True)
     color = fields.Integer()
+    room_type = fields.Char(required=True)
     
     instructor_id = fields.Many2one('res.partner', string="Instructor",
         domain=['|', ('instructor', '=', True),
@@ -57,13 +58,15 @@ class Session(models.Model):
     course_id = fields.Many2one('openacademy.course',
         ondelete='cascade', string="Course", required=True)
     attendee_ids = fields.Many2many('res.partner', string="Attendees")
-
     taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
     end_date = fields.Date(string="End Date", store=True,
         compute='_get_end_date', inverse='_set_end_date')
     
     attendees_count = fields.Integer(
         string="Attendees count", compute='_get_attendees_count', store=True)
+    
+    room_type = fields.Many2one('openacademy.room.type', string="Room Type")
+
 
     
     @api.depends('seats', 'attendee_ids')
@@ -92,6 +95,33 @@ class Session(models.Model):
             }
     
 
+    @api.depends('seats', 'room_type')
+    def _seats(self):
+        for r in self:
+            if not r.seats:
+                r.seats = 0.0
+            else:
+                r.seats = 100.0 * len(r.room_type) / r.seats
+
+    @api.onchange('seats', 'room_type')
+    def _verify_valid_seats(self):
+        if self.seats < 0:
+            return {
+                'warning': {
+                    'title': _("Incorrect 'seats' value"),
+                    'message': _("The number of available seats may not be negative"),
+                },
+            }
+        if self.seats < len(self.room_type):
+            return {
+                'warning': {
+                    'title': _("Too many room type"),
+                    'message': _("Increase seats or remove excess room type"),
+                },
+            }    
+    
+    
+    
     @api.depends('start_date', 'duration')
     def _get_end_date(self):
         for r in self:
@@ -125,3 +155,21 @@ class Session(models.Model):
         for r in self:
             if r.instructor_id and r.instructor_id in r.attendee_ids:
                 raise exceptions.ValidationError(_("A session's instructor can't be an attendee"))
+
+                
+                
+class Room_type(models.Model):
+    _name = 'openacademy.room.type'
+    _description = 'OpenAcademy Room Type'
+    
+    
+    name = fields.Char(string="Title",required=True)
+    address = fields.Char()
+    seats = fields.Integer(string="Number of seats")
+    room_type = fields.Many2one('openacademy.session', required=True)
+    
+    
+    
+    
+    
+    
