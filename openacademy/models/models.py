@@ -136,7 +136,9 @@ class Room_type(models.Model):
     _description = 'OpenAcademy Room Type'
       
     name = fields.Char(string="Name",required=True)
+    description = fields.Text()
+    
     address = fields.Char()
     seats = fields.Integer(string="Number of seats")
     
-    
+    session_ids = fields.One2many('openacademy.session', 'room_type', string="Sessions")

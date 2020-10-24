@@ -133,7 +133,7 @@
         
         <record model="ir.ui.view" id="openacademy_session_graph_view">
             <field name="name">openacademy.session.graph</field>
-            <field name="modelall class room">openacademy.session</field>
+            <field name="model">openacademy.session</field>
             <field name="arch" type="xml">
                 <graph string="Participations by Courses">
                     <field name="course_id"/>
@@ -236,8 +236,20 @@
                     <sheet>
                         <group>
                             <field name="name"/>
-                            <field name="description"/>
                         </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids">
+                                    <tree string="Registered sessions">
+                                        <field name="name"/>
+                                        <field name="instructor_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
