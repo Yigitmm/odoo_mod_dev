@@ -140,6 +140,4 @@ class Room_type(models.Model):
     address = fields.Char()
     seats = fields.Integer(string="Number of seats")
     
-    attendee_ids = fields.Many2many('res.partner', string="Attendees")
-    
-    
+    session_ids = fields.One2many('openacademy.session', 'room_type', string="Sessions")

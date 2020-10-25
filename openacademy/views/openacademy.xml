@@ -237,8 +237,11 @@
                         <group>
                             <field name="name"/>
                         </group>
-                        <label for="attendee_ids"/>
-                        <field name="attendee_ids"/>
+                        <notebook>
+                            <page string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
