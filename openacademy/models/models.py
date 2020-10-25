@@ -64,7 +64,7 @@ class Session(models.Model):
     attendees_count = fields.Integer(
         string="Attendees count", compute='_get_attendees_count', store=True)
     
-    room_type = fields.Many2one('openacademy.room.type', string="Room Type", required=True)
+    room_type = fields.Many2one('openacademy.room.type', string="Room type", required=True)
     seats = fields.Integer(related='room_type.seats', string="Number of seats")
     address = fields.Char(related='room_type.address', string="Address")
     
@@ -133,12 +133,13 @@ class Session(models.Model):
 class Room_type(models.Model):
     _name = 'openacademy.room.type'
     _description = 'OpenAcademy Room Type'
-      
+    
     name = fields.Char(string="Name",required=True)
     description = fields.Text()
     
     address = fields.Char()
     seats = fields.Integer(string="Number of seats")
     
+    attendee_ids = fields.Many2many('res.partner', string="Attendees")
     
-    session_ids = fields.One2many('openacademy.session', 'room_type', string="Sessions")
+    

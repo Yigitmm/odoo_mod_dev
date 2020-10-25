@@ -237,19 +237,8 @@
                         <group>
                             <field name="name"/>
                         </group>
-                        <notebook>
-                            <page string="Description">
-                                <field name="description"/>
-                            </page>
-                            <page string="Sessions">
-                                <field name="session_ids">
-                                    <tree string="Registered Sessions">
-                                        <field name="name"/>
-                                        <field name="instructor_id"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
+                        <label for="attendee_ids"/>
+                        <field name="attendee_ids"/>
                     </sheet>
                 </form>
             </field>
